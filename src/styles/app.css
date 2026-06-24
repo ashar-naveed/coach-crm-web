@@ -2603,3 +2603,31 @@ body:has(.login-page) {
     grid-template-columns: 1fr;
   }
 }
+
+/* ============================================================
+   Mobile messages — back button + chat-open toggle
+   ============================================================ */
+.msg-chat__back {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .msg-chat__back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius);
+    background: transparent;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-right: 0.5rem;
+  }
+
+  .msg-chat__back:hover {
+    background: var(--bg);
+  }
+}

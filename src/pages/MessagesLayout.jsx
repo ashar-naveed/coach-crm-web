@@ -103,6 +103,13 @@ export default function MessagesLayout() {
     setMessages([]);
   };
 
+  // Mobile: going "back" deselects the conversation, returning to the list
+  const backToList = () => {
+    setSelected(null);
+    selectedRef.current = null;
+    navigate("/messages", { replace: true });
+  };
+
   const send = async () => {
     const trimmed = text.trim();
     if (!trimmed || sending || !selected) return;
@@ -180,7 +187,7 @@ export default function MessagesLayout() {
   );
 
   return (
-    <div className="msg-layout">
+    <div className={`msg-layout${selected ? " msg-layout--chat-open" : ""}`}>
       {/* Left sidebar */}
       <div className="msg-sidebar">
         <div className="msg-sidebar__header">
@@ -267,33 +274,60 @@ export default function MessagesLayout() {
       {/* Right chat area */}
       {selected ? (
         <div className="msg-chat">
-          <div
-            className="msg-chat__header"
-            onClick={() => isCoach && navigate(`/clients/${selected.id}`)}
-            style={{ cursor: isCoach ? "pointer" : "default" }}
-          >
-            <div className="msg-convo-avatar msg-convo-avatar--lg">
-              {selected.name.charAt(0).toUpperCase()}
-            </div>
-            <div>
-              <div className="msg-chat__name">{selected.name}</div>
-              <div className="msg-chat__meta">
-                {[selected.job_title, selected.organization]
-                  .filter(Boolean)
-                  .join(" · ")}
-              </div>
-            </div>
-            {isCoach && (
-              <span
-                style={{
-                  marginLeft: "auto",
-                  fontSize: "0.8rem",
-                  color: "var(--primary)",
-                }}
+          <div className="msg-chat__header">
+            {/* Mobile-only back button */}
+            <button
+              className="msg-chat__back"
+              onClick={backToList}
+              aria-label="Back to conversations"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
-                View Profile →
-              </span>
-            )}
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.875rem",
+                flex: 1,
+                cursor: isCoach ? "pointer" : "default",
+              }}
+              onClick={() => isCoach && navigate(`/clients/${selected.id}`)}
+            >
+              <div className="msg-convo-avatar msg-convo-avatar--lg">
+                {selected.name.charAt(0).toUpperCase()}
+              </div>
+              <div>
+                <div className="msg-chat__name">{selected.name}</div>
+                <div className="msg-chat__meta">
+                  {[selected.job_title, selected.organization]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </div>
+              </div>
+              {isCoach && (
+                <span
+                  style={{
+                    marginLeft: "auto",
+                    fontSize: "0.8rem",
+                    color: "var(--primary)",
+                  }}
+                >
+                  View Profile →
+                </span>
+              )}
+            </div>
           </div>
 
           <div className="msg-chat__body">
