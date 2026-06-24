@@ -45,6 +45,7 @@ function Layout({ children }) {
   const [showProfile, setShowProfile] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [unreadMessages, setUnreadMessages] = useState(0);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     const fetchCounts = () => {
@@ -67,6 +68,11 @@ function Layout({ children }) {
       window.removeEventListener("focus", fetchCounts);
     };
   }, []);
+
+  // Close mobile sidebar whenever the route changes
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
 
   const handleLogout = async () => {
     await logout();
@@ -91,7 +97,13 @@ function Layout({ children }) {
 
   return (
     <div className="app-shell">
-      <nav className="sidebar">
+      {/* Mobile dark overlay behind the open sidebar */}
+      <div
+        className={`sidebar__overlay${sidebarOpen ? " sidebar__overlay--visible" : ""}`}
+        onClick={() => setSidebarOpen(false)}
+      />
+
+      <nav className={`sidebar${sidebarOpen ? " sidebar--open" : ""}`}>
         <div className="sidebar__brand">
           <img src={logo} alt="Mumkin" className="sidebar__logo" />
           <span>CoachCRM</span>
@@ -114,7 +126,29 @@ function Layout({ children }) {
 
       <div className="main-wrapper">
         <header className="topbar">
-          <div className="topbar__left" />
+          <div className="topbar__left">
+            {/* Hamburger - only visible on mobile via CSS */}
+            <button
+              className="sidebar__hamburger"
+              onClick={() => setSidebarOpen((o) => !o)}
+              aria-label="Toggle menu"
+            >
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            </button>
+          </div>
           <div className="topbar__right">
             {/* Messages icon with badge */}
             <button

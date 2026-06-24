@@ -2496,3 +2496,110 @@ body:has(.login-page) {
   overflow: auto;
   height: auto;
 }
+
+/* ============================================================
+   Mobile responsive sidebar
+   ============================================================ */
+.sidebar__hamburger {
+  display: none;
+}
+
+.sidebar__overlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    z-index: 1000;
+  }
+
+  .sidebar--open {
+    transform: translateX(0);
+  }
+
+  .main-wrapper {
+    left: 0;
+  }
+
+  .sidebar__hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius);
+    background: transparent;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  .sidebar__overlay--visible {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+  }
+
+  .topbar {
+    padding: 0 1rem;
+  }
+
+  .main-wrapper .main-content {
+    padding: 1.25rem 1rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem;
+  }
+
+  .dashboard-panels {
+    grid-template-columns: 1fr;
+  }
+
+  .login-card {
+    padding: 2rem 1.5rem;
+    max-width: 92vw;
+  }
+
+  .msg-sidebar {
+    width: 100%;
+  }
+
+  .msg-chat {
+    display: none;
+  }
+
+  .msg-layout--chat-open .msg-sidebar {
+    display: none;
+  }
+
+  .msg-layout--chat-open .msg-chat {
+    display: flex;
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .stat-value {
+    font-size: 2.25rem !important;
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+}
