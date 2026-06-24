@@ -1,4 +1,4 @@
-const API_BASE = "/api";
+const API_BASE = "https://mumkin-demo.freehosting.dev/api";
 
 export async function apiFetch(endpoint, options = {}) {
   const response = await fetch(API_BASE + endpoint, {
