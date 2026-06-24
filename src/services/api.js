@@ -1,9 +1,13 @@
 const API_BASE = "https://coach-crm-backend-production.up.railway.app/api";
 
 export async function apiFetch(endpoint, options = {}) {
+  const token = localStorage.getItem("token");
+
+  const headers = { "Content-Type": "application/json" };
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+
   const response = await fetch(API_BASE + endpoint, {
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    headers,
     ...options,
   });
 
